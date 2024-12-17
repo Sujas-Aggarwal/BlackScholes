@@ -1,4 +1,4 @@
-from numpy import exp, sqrt, log
+from numpy import exp, sqrt, log, round
 from scipy.stats import norm
 
 
@@ -52,3 +52,15 @@ class BlackScholes:
         )
         self.put_gamma = self.call_gamma
         return call_price,put_price
+
+# For Manual Unit Testing
+if __name__ == "__main__":
+    blackScholes = BlackScholes(
+        time_to_maturity= 2,
+        strike= 90,
+        current_price= 100,
+        volatility= 0.2,
+        interest_rate= 0.05
+    )
+    call,put= blackScholes.run()
+    print(f"Call Value = {round(call,2)}\nPut Value = {round(put,2)}")
