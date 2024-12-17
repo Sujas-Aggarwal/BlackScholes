@@ -69,3 +69,10 @@ While the model is widely applicable, it has limitations:
 - Not suitable for options on assets paying dividends without adjustments.
 - Does not account for market frictions like transaction costs.
 - Only applicable to European options.
+
+# Installation
+- Clone
+- [Optional] Create Virtual Environment ```python -m venv venv```
+- Run ```pip install -r requirements.tx```
+- Start the server ```python index.py```
+- Go to ```localhost:5000```
