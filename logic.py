@@ -51,3 +51,4 @@ class BlackScholes:
             strike * volatility * sqrt(time_to_maturity)
         )
         self.put_gamma = self.call_gamma
+        return call_price,put_price
