@@ -1,4 +1,4 @@
-from flask import Flask, make_response, request,send_file
+from flask import Flask, make_response, request,render_template
 from visualizer import Visualizer
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,7 +7,7 @@ app = Flask(__name__)
 vis = Visualizer()
 @app.get("/")
 def handleStatic():
-    return send_file("templates/index.html")
+    return render_template("index.html")
 @app.post('/plot')
 def Plots():
     body = request.json
