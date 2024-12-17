@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            //using "build" group since vscode has prebuild keyboard shortcut for this ctrl + shift + b
+            // sue me for this
+            "label": "Generate Requirements.txt",
+            "type": "shell",
+            "command": "pip freeze > requirements.txt && python index.py",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Generate requirements.txt file"
+        },
+    ]
+}
