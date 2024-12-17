@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Scholes Pricing Model</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #plotImage {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+        #downloadBtn {
+            display: none;
+            margin-top: 10px;
+        }
+        .dark-theme {
+            background-color: #333;
+            color: #fff;
+        }
+        .dark-theme .container {
+            background-color: #444;
+        }
+        .dark-theme input, 
+        .dark-theme select {
+            background-color: #555;
+            color: #fff;
+            border-color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Black Scholes Pricing Model</h1>
+        <div id="plotContainer">
+            <img id="plotImage">
+            <button id="downloadBtn">Download Plot</button>
+        </div>
+        <h2><a style="all:unset;cursor: pointer;" href="https://github.com/Sujas-Aggarwal">Created with ❤️ by Sujas</a></h1>
+        <form id="blackScholesForm">
+            <div class="form-group">
+                <label for="type">Option Type:</label>
+                <select oninput="getPlot()" id="type" name="type">
+                    <option value="call">Call Option</option>
+                    <option value="put">Put Option</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="strike">Strike Price:</label>
+                <input oninput="getPlot()" type="number" id="strike" name="strike" value="100" step="1">
+            </div>
+            <div class="form-group">
+                <label for="time_to_maturity">Time to Maturity (Years):</label>
+                <input oninput="getPlot()" type="number" id="time_to_maturity" name="time_to_maturity" value="1" step="0.1">
+            </div>
+            <div class="form-group">
+                <label for="interest_rate">Interest Rate (%):</label>
+                <input oninput="getPlot()" type="number" id="interest_rate" name="interest_rate" value="5" step="0.1">
+            </div>
+            <div class="form-group">
+                <label for="theme">Theme:</label>
+                <select oninput="getPlot()" id="theme" name="theme">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select>
+            </div>
+            <button  id="submit-button" type="submit">Generate Plot</button>
+        </form>
+
+    </div>
+
+    <script>
+        document.onload = getPlot();
+        document.getElementById('blackScholesForm').addEventListener('submit',(e)=>{getPlot(e)});
+        function getPlot(e=null) {
+            if (e)
+                e.preventDefault();
+            // Prepare data for submission
+            const formData = {
+                type: document.getElementById('type').value,
+                strike: parseFloat(document.getElementById('strike').value),
+                time_to_maturity: parseFloat(document.getElementById('time_to_maturity').value),
+                interest_rate: parseFloat(document.getElementById('interest_rate').value),
+                theme: document.getElementById('theme').value
+            };
+
+            // Apply theme
+            if (formData.theme === 'dark') {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+            }
+
+            // Send POST request to generate plot
+            fetch('/plot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                // Create image URL from blob
+                const imageUrl = URL.createObjectURL(blob);
+                const plotImage = document.getElementById('plotImage');
+                plotImage.src = imageUrl;
+
+                // Show download button
+                const downloadBtn = document.getElementById('downloadBtn');
+                downloadBtn.style.display = 'block';
+                downloadBtn.onclick = () => {
+                    const link = document.createElement('a');
+                    link.href = imageUrl;
+                    link.download = 'black_scholes_plot.png';
+                    link.click();
+                };
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to generate plot');
+            });
+        }
+        // Theme change listener
+        document.getElementById('theme').addEventListener('change', function() {
+            if (this.value === 'dark') {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+            }
+        });
+    </script>
+</body>
+</html>

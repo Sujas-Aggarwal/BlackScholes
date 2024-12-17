@@ -1,4 +1,4 @@
-from numpy import exp, sqrt, log, round
+from numpy import exp, sqrt, log
 from scipy.stats import norm
 
 
