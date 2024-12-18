@@ -42,7 +42,8 @@ class BlackScholes:
         put_price = (
             strike * exp(-(interest_rate * time_to_maturity)) * norm.cdf(-d2)
         ) - current_price * norm.cdf(-d1)
-
+        print(f"d1: {d1}, d2: {d2}")
+        print(f"Call Price: {call_price}, Put Price: {put_price}")
         self.call_price = call_price
         self.put_price = put_price
         self.call_delta = norm.cdf(d1)

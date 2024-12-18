@@ -11,8 +11,8 @@ def handleStatic():
 @app.post('/plot')
 def Plots():
     body = request.json
-    spot_range = np.linspace(80, 120, 10)
-    vol_range = np.linspace(0.1, 0.3, 10)
+    spot_range = np.linspace(50, 150, 10)
+    vol_range = np.linspace(0.1, 0.5, 10)
     bs_model = {
         "time_to_maturity": body["time_to_maturity"] if body["time_to_maturity"] else 10,
         "interest_rate": body["interest_rate"] if body["interest_rate"] else 0.5
